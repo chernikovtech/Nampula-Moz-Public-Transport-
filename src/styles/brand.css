@@ -1,0 +1,79 @@
+/* Yango Tech Brand System — maputo-transit-ux */
+
+@font-face {
+  font-family: "Yango Headline";
+  src: url("https://yastatic.net/s3/distribution/lpc/fonts/YangoHeadline/YangoHeadline.woff2") format("woff2"),
+       url("https://yastatic.net/s3/distribution/lpc/fonts/YangoHeadline/YangoHeadline.woff") format("woff");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Yango Group Text";
+  src: url("https://yastatic.net/s3/distribution/lpc/fonts/YangoGroupText/YangoGroupText-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Yango Group Text";
+  src: url("https://yastatic.net/s3/distribution/lpc/fonts/YangoGroupText/YangoGroupText-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Yango Group Text";
+  src: url("https://yastatic.net/s3/distribution/lpc/fonts/YangoGroupText/YangoGroupText-Bold.woff2") format("woff2");
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Yango Group Text";
+  src: url("https://yastatic.net/s3/distribution/lpc/fonts/YangoGroupText/YangoGroupText-Black.woff2") format("woff2");
+  font-weight: 900;
+  font-display: swap;
+}
+
+:root {
+  --primary-color: #FF1A1A;
+  --body-color: #F5F5F5;
+  --text-primary: #141414;
+  --surface-dark: #232323;
+  --surface-mid: #323232;
+  --text-secondary: #7A7A7A;
+  --border-color: rgba(196, 196, 196, 1);
+  --text-on-dark: #F5F5F5;
+}
+
+::selection {
+  background: var(--primary-color);
+  color: white;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Yango Group Text", "YS Text", Helvetica, Arial, sans-serif;
+  background: var(--body-color);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  font-variant-numeric: proportional-nums;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+}
+
+h1, h2, h3 {
+  font-family: "Yango Headline", Helvetica, Arial, sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: calc(1em / 50);
+}
+
+h1 { font-size: clamp(2.2rem, 5vw, 4rem); line-height: 88%; }
+h2 { font-size: clamp(1.6rem, 3.5vw, 2.5rem); line-height: 90%; }
+h3 { font-size: clamp(1.2rem, 2.5vw, 1.5rem); line-height: 90%; }
