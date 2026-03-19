@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 const C = {
   teal: "#0D9488", tealDark: "#0A7A70", tealLight: "#CCFBF1",
@@ -375,6 +375,17 @@ const TicketScreen = ({ back }) => {
     const t = setInterval(() => setTimeLeft(v => Math.max(0, v - 1)), 1000);
     return () => clearInterval(t);
   }, []);
+  const qrPattern = useMemo(() => {
+    const pattern = [];
+    for (let r = 0; r < 12; r++)
+      for (let c = 0; c < 12; c++) {
+        const corner = (r < 3 && c < 3) || (r < 3 && c > 8) || (r > 8 && c < 3);
+        const seed = (r * 12 + c) * 2654435761;
+        const fill = corner || ((seed >>> 0) % 100) > 40;
+        if (fill) pattern.push({ r, c });
+      }
+    return pattern;
+  }, []);
   const m = Math.floor(timeLeft / 60), s = timeLeft % 60;
   return (
     <div style={{ flex: 1, overflow: "auto", background: C.dark }}>
@@ -385,22 +396,18 @@ const TicketScreen = ({ back }) => {
           </button>
           <div style={{ fontSize: 18, fontWeight: 800, color: "#fff" }}>Bilhete Multimodal</div>
         </div>
-        
+
         {/* Ticket */}
         <div style={{ background: `linear-gradient(145deg, ${C.teal} 0%, ${C.tealDark} 100%)`, borderRadius: 24, padding: "24px", textAlign: "center", position: "relative", overflow: "hidden" }}>
           <div style={{ position: "absolute", top: -20, right: -20, width: 80, height: 80, borderRadius: 40, background: "rgba(255,255,255,0.08)" }} />
-          
+
           <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: "0.15em", color: "rgba(255,255,255,0.6)", fontWeight: 600, marginBottom: 4 }}>Mover Maputo · Bilhete Multimodal</div>
-          
+
           <div style={{ width: 140, height: 140, margin: "12px auto", background: "#fff", borderRadius: 18, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <svg viewBox="0 0 100 100" width="120" height="120">
-              {[...Array(12)].map((_, r) =>
-                [...Array(12)].map((_, c) => {
-                  const corner = (r < 3 && c < 3) || (r < 3 && c > 8) || (r > 8 && c < 3);
-                  const fill = corner || Math.random() > 0.4;
-                  return fill ? <rect key={`${r}${c}`} x={c*8+2} y={r*8+2} width="7" height="7" rx="1.5" fill={C.dark} /> : null;
-                })
-              )}
+              {qrPattern.map(({ r, c }) => (
+                <rect key={`${r}${c}`} x={c*8+2} y={r*8+2} width="7" height="7" rx="1.5" fill={C.dark} />
+              ))}
             </svg>
           </div>
           

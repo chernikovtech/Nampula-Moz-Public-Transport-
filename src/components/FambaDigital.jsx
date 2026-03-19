@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 const colors = {
   primary: "#E85D04",
@@ -411,6 +411,17 @@ const ActiveTicketScreen = ({ onBack }) => {
     const timer = setInterval(() => setTimeLeft(t => Math.max(0, t - 1)), 1000);
     return () => clearInterval(timer);
   }, []);
+  const qrPattern = useMemo(() => {
+    const pattern = [];
+    for (let row = 0; row < 15; row++)
+      for (let col = 0; col < 15; col++) {
+        const isCorner = (row < 4 && col < 4) || (row < 4 && col > 10) || (row > 10 && col < 4);
+        const seed = (row * 15 + col) * 2654435761;
+        const filled = isCorner || ((seed >>> 0) % 100) > 45;
+        if (filled) pattern.push({ row, col });
+      }
+    return pattern;
+  }, []);
   const mins = Math.floor(timeLeft / 60);
   const secs = timeLeft % 60;
   return (
@@ -422,26 +433,21 @@ const ActiveTicketScreen = ({ onBack }) => {
           </button>
           <div style={{ fontSize: 20, fontWeight: 800, color: "#fff" }}>Bilhete Activo</div>
         </div>
-        
+
         {/* Ticket Card */}
         <div style={{ background: "linear-gradient(145deg, #E85D04 0%, #C14A00 100%)", borderRadius: 24, padding: "28px 24px", textAlign: "center", position: "relative", overflow: "hidden" }}>
           {/* Decorative circles */}
           <div style={{ position: "absolute", top: -30, right: -30, width: 100, height: 100, borderRadius: 50, background: "rgba(255,255,255,0.1)" }} />
           <div style={{ position: "absolute", bottom: -20, left: -20, width: 80, height: 80, borderRadius: 40, background: "rgba(255,255,255,0.08)" }} />
-          
+
           <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: "0.15em", color: "rgba(255,255,255,0.7)", fontWeight: 600, marginBottom: 8 }}>Famba Digital · Bilhete Simples</div>
-          
+
           {/* QR Code placeholder */}
           <div style={{ width: 160, height: 160, margin: "12px auto", background: "#fff", borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center", padding: 12 }}>
             <svg viewBox="0 0 120 120" width="136" height="136">
-              {/* Simplified QR pattern */}
-              {[...Array(15)].map((_, row) =>
-                [...Array(15)].map((_, col) => {
-                  const isCorner = (row < 4 && col < 4) || (row < 4 && col > 10) || (row > 10 && col < 4);
-                  const filled = isCorner || Math.random() > 0.45;
-                  return filled ? <rect key={`${row}-${col}`} x={col * 8} y={row * 8} width="7" height="7" rx="1.5" fill={colors.dark} /> : null;
-                })
-              )}
+              {qrPattern.map(({ row, col }) => (
+                <rect key={`${row}-${col}`} x={col * 8} y={row * 8} width="7" height="7" rx="1.5" fill={colors.dark} />
+              ))}
             </svg>
           </div>
           

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 
 const C = {
   indigo: "#4F46E5", indigoDark: "#3730A3", indigoLight: "#EEF2FF",
@@ -292,6 +292,18 @@ const CommunityScreen = () => {
 const TicketScreen = ({ go, back }) => {
   const [step, setStep] = useState(0);
   
+  const qrPattern = useMemo(() => {
+    const pattern = [];
+    for (let r = 0; r < 12; r++)
+      for (let c = 0; c < 12; c++) {
+        const corner = (r<3&&c<3)||(r<3&&c>8)||(r>8&&c<3);
+        const seed = (r * 12 + c) * 2654435761;
+        const fill = corner || ((seed >>> 0) % 100) > 40;
+        if (fill) pattern.push({ r, c });
+      }
+    return pattern;
+  }, []);
+
   if (step === 1) return (
     <div style={{ flex: 1, overflow: "auto", background: C.dark }}>
       <div style={{ padding: "16px 20px" }}>
@@ -301,19 +313,16 @@ const TicketScreen = ({ go, back }) => {
           </button>
           <div style={{ fontSize: 18, fontWeight: 800, color: "#fff" }}>Bilhete Activo</div>
         </div>
-        
+
         <div style={{ background: `linear-gradient(145deg, ${C.indigo} 0%, ${C.indigoDark} 100%)`, borderRadius: 24, padding: "24px", textAlign: "center", position: "relative", overflow: "hidden" }}>
           <div style={{ position: "absolute", top: -25, right: -25, width: 90, height: 90, borderRadius: 45, background: "rgba(255,255,255,0.06)" }} />
           <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: "0.15em", color: "rgba(255,255,255,0.5)", fontWeight: 600 }}>Xitimela · Bilhete Comunitário</div>
-          
+
           <div style={{ width: 130, height: 130, margin: "12px auto", background: "#fff", borderRadius: 18, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <svg viewBox="0 0 100 100" width="110" height="110">
-              {[...Array(12)].map((_, r) =>
-                [...Array(12)].map((_, c) => {
-                  const corner = (r<3&&c<3)||(r<3&&c>8)||(r>8&&c<3);
-                  return (corner || Math.random()>0.4) ? <rect key={`${r}${c}`} x={c*8+2} y={r*8+2} width="7" height="7" rx="1.5" fill={C.dark}/> : null;
-                })
-              )}
+              {qrPattern.map(({ r, c }) => (
+                <rect key={`${r}${c}`} x={c*8+2} y={r*8+2} width="7" height="7" rx="1.5" fill={C.dark} />
+              ))}
             </svg>
           </div>
           
