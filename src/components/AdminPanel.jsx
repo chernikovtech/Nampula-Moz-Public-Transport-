@@ -103,11 +103,15 @@ const OverviewScreen = ({ city }) => {
 
     {/* Live Alerts */}
     <div style={{ fontSize: 10, fontWeight: 600, color: C.muted, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>Alertas em Tempo Real</div>
-    {[
+    {(city === "maputo" ? [
       { icon: "🔴", text: "Rota 05 · MP-0421 desviou 400m — corte de rota detectado", time: "2 min", action: "Investigar" },
       { icon: "🟡", text: "Rota 12 · Congestionamento Av. Mondlane — 3 buses atrasados", time: "8 min", action: "Redirigir" },
       { icon: "🔴", text: "Rota 07 · Sobrepreço reportado (25 MT vs 15 MT oficial)", time: "15 min", action: "Notificar" },
-    ].map((a, i) => (
+    ] : [
+      { icon: "🔴", text: "Rota 02 · NP-0087 desviou 600m — corte na Av. Mondlane", time: "3 min", action: "Investigar" },
+      { icon: "🔴", text: "Rota 05 · Sobrepreço reportado (20 MT vs 10 MT oficial)", time: "10 min", action: "Notificar" },
+      { icon: "🟡", text: "Rota 01 · NP-0134 atraso 20 min na saída de Muhala Exp.", time: "18 min", action: "Contactar" },
+    ]).map((a, i) => (
       <div key={i} style={{ background: C.card, border: `1px solid ${a.icon === "🔴" ? `${C.danger}30` : `${C.amber}30`}`, borderRadius: 14, padding: "10px 12px", marginBottom: 6, display: "flex", alignItems: "center", gap: 8 }}>
         <span style={{ fontSize: 14 }}>{a.icon}</span>
         <div style={{ flex: 1 }}>
@@ -135,32 +139,55 @@ const OverviewScreen = ({ city }) => {
   );
 };
 
-const FleetScreen = () => (
+const FLEET_DATA = {
+  maputo: {
+    summary: [
+      { label: "Em Rota", value: "487", color: C.success },
+      { label: "No Terminal", value: "142", color: C.amber },
+      { label: "Offline", value: "110", color: C.danger },
+    ],
+    operators: [
+      { name: "Cooperativa Fénix", buses: 52, active: 45, compliance: 94, revenue: "182K MT" },
+      { name: "Cooperativa Estrela", buses: 48, active: 41, compliance: 89, revenue: "156K MT" },
+      { name: "TPM-TUR (Público)", buses: 24, active: 22, compliance: 98, revenue: "98K MT" },
+      { name: "Cooperativa Sol", buses: 38, active: 32, compliance: 86, revenue: "124K MT" },
+      { name: "MetroBus", buses: 45, active: 43, compliance: 97, revenue: "210K MT" },
+    ],
+  },
+  nampula: {
+    summary: [
+      { label: "Em Rota", value: "102", color: C.success },
+      { label: "No Terminal", value: "24", color: C.amber },
+      { label: "Offline", value: "12", color: C.danger },
+    ],
+    operators: [
+      { name: "Coop. Estrela do Norte", buses: 34, active: 28, compliance: 82, revenue: "68K MT" },
+      { name: "Transnampula", buses: 26, active: 22, compliance: 88, revenue: "54K MT" },
+      { name: "Coop. Progresso", buses: 22, active: 18, compliance: 79, revenue: "42K MT" },
+      { name: "Auto-Nampula (Público)", buses: 18, active: 16, compliance: 92, revenue: "38K MT" },
+      { name: "Coop. Unidade", buses: 38, active: 18, compliance: 75, revenue: "32K MT" },
+    ],
+  },
+};
+
+const FleetScreen = ({ city }) => {
+  const data = FLEET_DATA[city];
+  return (
   <div style={{ flex: 1, overflow: "auto", padding: "12px 16px" }}>
     <div style={{ fontSize: 16, fontWeight: 800, color: C.text, marginBottom: 12 }}>Estado da Frota</div>
-    
+
     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginBottom: 14 }}>
-      {[
-        { label: "Em Rota", value: "487", color: C.success },
-        { label: "No Terminal", value: "142", color: C.amber },
-        { label: "Offline", value: "110", color: C.danger },
-      ].map((s, i) => (
+      {data.summary.map((s, i) => (
         <div key={i} style={{ background: C.card, borderRadius: 12, padding: "12px", textAlign: "center", border: `1px solid ${C.border}` }}>
           <div style={{ fontSize: 20, fontWeight: 800, color: s.color }}>{s.value}</div>
           <div style={{ fontSize: 9, color: C.muted, textTransform: "uppercase" }}>{s.label}</div>
         </div>
       ))}
     </div>
-    
+
     {/* Operator breakdown */}
     <div style={{ fontSize: 10, fontWeight: 600, color: C.muted, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>Por Operador</div>
-    {[
-      { name: "Cooperativa Fénix", buses: 52, active: 45, compliance: 94, revenue: "182K MT" },
-      { name: "Cooperativa Estrela", buses: 48, active: 41, compliance: 89, revenue: "156K MT" },
-      { name: "TPM-TUR (Público)", buses: 24, active: 22, compliance: 98, revenue: "98K MT" },
-      { name: "Cooperativa Sol", buses: 38, active: 32, compliance: 86, revenue: "124K MT" },
-      { name: "MetroBus", buses: 45, active: 43, compliance: 97, revenue: "210K MT" },
-    ].map((op, i) => (
+    {data.operators.map((op, i) => (
       <div key={i} style={{ background: C.card, borderRadius: 14, padding: "12px 14px", border: `1px solid ${C.border}`, marginBottom: 6 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
           <div>
@@ -175,9 +202,33 @@ const FleetScreen = () => (
       </div>
     ))}
   </div>
-);
+  );
+};
 
-const ComplianceScreen = () => (
+const COMPLIANCE_DATA = {
+  maputo: {
+    rate: "91.4%", deviations: "12", overcharges: "4", skippedStops: "8",
+    violations: [
+      { bus: "MP-0421", driver: "João Tembe", route: "05", type: "Corte de rota", severity: "high", time: "14:18", detail: "Desvio 400m na Av. Lurdes Mutola — 3 paragens ignoradas", confirmed: 5 },
+      { bus: "MP-0298", driver: "Antonio Macie", route: "07", type: "Sobrepreço", severity: "high", time: "13:52", detail: "Cobrou 25 MT — tarifa oficial 15 MT. 4 reportes de passageiros.", confirmed: 4 },
+      { bus: "MP-0156", driver: "Pedro Cossa", route: "12", type: "Paragem ignorada", severity: "medium", time: "13:30", detail: "Paragem Av. FPLM ignorada — sem passageiros reportados a bordo", confirmed: 2 },
+      { bus: "MP-0332", driver: "Carlos Bila", route: "03", type: "Atraso", severity: "low", time: "12:45", detail: "15 min atraso na saída do terminal Museu", confirmed: 0 },
+    ],
+  },
+  nampula: {
+    rate: "84.7%", deviations: "18", overcharges: "9", skippedStops: "14",
+    violations: [
+      { bus: "NP-0087", driver: "Amade Rachid", route: "02", type: "Corte de rota", severity: "high", time: "14:05", detail: "Desvio 600m na Av. Eduardo Mondlane — 4 paragens ignoradas", confirmed: 7 },
+      { bus: "NP-0134", driver: "Manuel Ernesto", route: "05", type: "Sobrepreço", severity: "high", time: "13:40", detail: "Cobrou 20 MT — tarifa oficial 10 MT. 6 reportes de passageiros.", confirmed: 6 },
+      { bus: "NP-0056", driver: "Ismael Daúdo", route: "01", type: "Paragem ignorada", severity: "medium", time: "13:15", detail: "Paragem Muhala Expansão ignorada — 3 passageiros reclamaram", confirmed: 3 },
+      { bus: "NP-0098", driver: "Paulo Taímo", route: "03", type: "Corte de rota", severity: "high", time: "12:30", detail: "Rota cortada em Namicopo — voltou ao centro sem completar", confirmed: 4 },
+    ],
+  },
+};
+
+const ComplianceScreen = ({ city }) => {
+  const data = COMPLIANCE_DATA[city];
+  return (
   <div style={{ flex: 1, overflow: "auto", padding: "12px 16px" }}>
     <div style={{ fontSize: 16, fontWeight: 800, color: C.text, marginBottom: 12 }}>Conformidade de Rotas</div>
     
@@ -186,17 +237,17 @@ const ComplianceScreen = () => (
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <div>
           <div style={{ fontSize: 10, color: "rgba(255,255,255,0.5)", textTransform: "uppercase" }}>Taxa Global de Conformidade</div>
-          <div style={{ fontSize: 32, fontWeight: 800, marginTop: 4 }}>91.4%</div>
+          <div style={{ fontSize: 32, fontWeight: 800, marginTop: 4 }}>{data.rate}</div>
         </div>
-        <div style={{ width: 56, height: 56, borderRadius: 28, border: `3px solid ${C.success}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <svg width="28" height="28" viewBox="0 0 28 28"><path d="M6 14 L12 20 L22 8" stroke={C.success} strokeWidth="3" fill="none" strokeLinecap="round"/></svg>
+        <div style={{ width: 56, height: 56, borderRadius: 28, border: `3px solid ${parseFloat(data.rate) >= 90 ? C.success : C.amber}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <svg width="28" height="28" viewBox="0 0 28 28"><path d="M6 14 L12 20 L22 8" stroke={parseFloat(data.rate) >= 90 ? C.success : C.amber} strokeWidth="3" fill="none" strokeLinecap="round"/></svg>
         </div>
       </div>
       <div style={{ display: "flex", gap: 10, marginTop: 12 }}>
         {[
-          { label: "Desvios/dia", value: "12", color: C.danger },
-          { label: "Sobrepreços", value: "4", color: C.amber },
-          { label: "Paragens ignoradas", value: "8", color: "#818CF8" },
+          { label: "Desvios/dia", value: data.deviations, color: C.danger },
+          { label: "Sobrepreços", value: data.overcharges, color: C.amber },
+          { label: "Paragens ignoradas", value: data.skippedStops, color: "#818CF8" },
         ].map((s, i) => (
           <div key={i} style={{ flex: 1, background: "rgba(255,255,255,0.08)", borderRadius: 10, padding: "8px", textAlign: "center" }}>
             <div style={{ fontSize: 16, fontWeight: 800, color: s.color }}>{s.value}</div>
@@ -208,12 +259,7 @@ const ComplianceScreen = () => (
 
     {/* Violation list */}
     <div style={{ fontSize: 10, fontWeight: 600, color: C.muted, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>Violações Recentes</div>
-    {[
-      { bus: "MP-0421", driver: "João Tembe", route: "05", type: "Corte de rota", severity: "high", time: "14:18", detail: "Desvio 400m na Av. Lurdes Mutola — 3 paragens ignoradas", confirmed: 5 },
-      { bus: "MP-0298", driver: "Antonio Macie", route: "07", type: "Sobrepreço", severity: "high", time: "13:52", detail: "Cobrou 25 MT — tarifa oficial 15 MT. 4 reportes de passageiros.", confirmed: 4 },
-      { bus: "MP-0156", driver: "Pedro Cossa", route: "12", type: "Paragem ignorada", severity: "medium", time: "13:30", detail: "Paragem Av. FPLM ignorada — sem passageiros reportados a bordo", confirmed: 2 },
-      { bus: "MP-0332", driver: "Carlos Bila", route: "03", type: "Atraso", severity: "low", time: "12:45", detail: "15 min atraso na saída do terminal Museu", confirmed: 0 },
-    ].map((v, i) => (
+    {data.violations.map((v, i) => (
       <div key={i} style={{ background: C.card, border: `1px solid ${v.severity === "high" ? `${C.danger}30` : v.severity === "medium" ? `${C.amber}30` : C.border}`, borderRadius: 14, padding: "12px", marginBottom: 8 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
@@ -230,28 +276,54 @@ const ComplianceScreen = () => (
       </div>
     ))}
   </div>
-);
+  );
+};
 
-const RevenueScreen = () => (
+const REVENUE_DATA = {
+  maputo: {
+    chart: [
+      { day: "Seg", val: 1.1 }, { day: "Ter", val: 1.18 }, { day: "Qua", val: 1.05 },
+      { day: "Qui", val: 1.22 }, { day: "Sex", val: 1.31 }, { day: "Sáb", val: 0.86 }, { day: "Hoje", val: 1.26 },
+    ],
+    chartMax: 1.4,
+    payments: [
+      { method: "Dinheiro (via cobrador)", pct: 58, amount: "730K MT", color: C.amber, trend: "-3%" },
+      { method: "Famba Card", pct: 22, amount: "277K MT", color: C.indigo, trend: "+5%" },
+      { method: "M-Pesa / e-Mola", pct: 14, amount: "176K MT", color: C.teal, trend: "+12%" },
+      { method: "USSD / SMS", pct: 6, amount: "76K MT", color: C.red, trend: "+8%" },
+    ],
+    leakage: { pct: "~8.2%", amount: "103K MT/dia", detail: "Rotas 05 e 07 concentram 62% da fuga" },
+  },
+  nampula: {
+    chart: [
+      { day: "Seg", val: 0.38 }, { day: "Ter", val: 0.41 }, { day: "Qua", val: 0.36 },
+      { day: "Qui", val: 0.43 }, { day: "Sex", val: 0.45 }, { day: "Sáb", val: 0.28 }, { day: "Hoje", val: 0.42 },
+    ],
+    chartMax: 0.5,
+    payments: [
+      { method: "Dinheiro (via cobrador)", pct: 78, amount: "328K MT", color: C.amber, trend: "-1%" },
+      { method: "M-Pesa / e-Mola", pct: 12, amount: "50K MT", color: C.teal, trend: "+18%" },
+      { method: "USSD / SMS", pct: 7, amount: "29K MT", color: C.red, trend: "+15%" },
+      { method: "Famba Card", pct: 3, amount: "13K MT", color: C.indigo, trend: "+2%" },
+    ],
+    leakage: { pct: "~14.5%", amount: "61K MT/dia", detail: "Rotas 02 e 05 concentram 71% da fuga" },
+  },
+};
+
+const RevenueScreen = ({ city }) => {
+  const data = REVENUE_DATA[city];
+  return (
   <div style={{ flex: 1, overflow: "auto", padding: "12px 16px" }}>
     <div style={{ fontSize: 16, fontWeight: 800, color: C.text, marginBottom: 12 }}>Receita e Bilhética</div>
-    
+
     {/* Revenue chart placeholder */}
     <div style={{ background: C.card, borderRadius: 16, border: `1px solid ${C.border}`, padding: "14px", marginBottom: 14 }}>
       <div style={{ fontSize: 10, color: C.muted, textTransform: "uppercase", marginBottom: 8 }}>Receita Diária (últimos 7 dias)</div>
       <div style={{ display: "flex", alignItems: "flex-end", gap: 6, height: 100 }}>
-        {[
-          { day: "Seg", val: 1.1 },
-          { day: "Ter", val: 1.18 },
-          { day: "Qua", val: 1.05 },
-          { day: "Qui", val: 1.22 },
-          { day: "Sex", val: 1.31 },
-          { day: "Sáb", val: 0.86 },
-          { day: "Hoje", val: 1.26 },
-        ].map((d, i) => (
+        {data.chart.map((d, i) => (
           <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
             <span style={{ fontSize: 9, fontWeight: 600, color: d.day === "Hoje" ? C.red : C.muted }}>{d.val}M</span>
-            <div style={{ width: "100%", background: d.day === "Hoje" ? C.red : `${C.teal}40`, borderRadius: 4, height: `${(d.val / 1.4) * 80}px` }} />
+            <div style={{ width: "100%", background: d.day === "Hoje" ? C.red : `${C.teal}40`, borderRadius: 4, height: `${(d.val / data.chartMax) * 80}px` }} />
             <span style={{ fontSize: 8, color: C.muted }}>{d.day}</span>
           </div>
         ))}
@@ -260,12 +332,7 @@ const RevenueScreen = () => (
 
     {/* Payment method breakdown */}
     <div style={{ fontSize: 10, fontWeight: 600, color: C.muted, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>Por Método de Pagamento</div>
-    {[
-      { method: "Dinheiro (via cobrador)", pct: 58, amount: "730K MT", color: C.amber, trend: "-3%" },
-      { method: "Famba Card", pct: 22, amount: "277K MT", color: C.indigo, trend: "+5%" },
-      { method: "M-Pesa / e-Mola", pct: 14, amount: "176K MT", color: C.teal, trend: "+12%" },
-      { method: "USSD / SMS", pct: 6, amount: "76K MT", color: C.red, trend: "+8%" },
-    ].map((m, i) => (
+    {data.payments.map((m, i) => (
       <div key={i} style={{ background: C.card, borderRadius: 14, padding: "12px 14px", border: `1px solid ${C.border}`, marginBottom: 6 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
           <span style={{ fontSize: 12, fontWeight: 600, color: C.text }}>{m.method}</span>
@@ -288,23 +355,38 @@ const RevenueScreen = () => (
         <span style={{ fontSize: 12, fontWeight: 700, color: C.danger }}>Estimativa de Fuga de Receita</span>
       </div>
       <div style={{ fontSize: 11, color: C.text, lineHeight: 1.5 }}>
-        Com base na reconciliação GPS vs. bilhética, estima-se uma discrepância de <strong style={{ color: C.danger }}>~8.2%</strong> (103K MT/dia) entre passageiros contados e receita declarada. Rotas 05 e 07 concentram 62% da fuga.
+        Com base na reconciliação GPS vs. bilhética, estima-se uma discrepância de <strong style={{ color: C.danger }}>{data.leakage.pct}</strong> ({data.leakage.amount}) entre passageiros contados e receita declarada. {data.leakage.detail}.
       </div>
     </div>
   </div>
-);
+  );
+};
 
-const RoutesScreen = () => (
+const ROUTES_DATA = {
+  maputo: [
+    { num: "01", name: "Baixa—Magoanine", type: "BRT", pax: 18400, buses: 22, compliance: 96, revenue: "276K", load: 82 },
+    { num: "02", name: "Zimpeto—Matola Gare", type: "BRT", pax: 14200, buses: 18, compliance: 93, revenue: "213K", load: 78 },
+    { num: "03", name: "Museu—KaMpfumo", type: "Coop", pax: 8600, buses: 14, compliance: 91, revenue: "129K", load: 65 },
+    { num: "05", name: "Matola—Praça Trab.", type: "Coop", pax: 12100, buses: 16, compliance: 84, revenue: "181K", load: 88 },
+    { num: "07", name: "Xipamanine—Costa Sol", type: "Chapa", pax: 9800, buses: 28, compliance: 79, revenue: "147K", load: 71 },
+    { num: "12", name: "KaMpfumo—Zimpeto", type: "Coop", pax: 7200, buses: 12, compliance: 92, revenue: "108K", load: 59 },
+  ],
+  nampula: [
+    { num: "01", name: "Centro—Muhala Exp.", type: "Coop", pax: 6800, buses: 22, compliance: 88, revenue: "68K", load: 85 },
+    { num: "02", name: "Centro—Namicopo", type: "Coop", pax: 5400, buses: 18, compliance: 81, revenue: "54K", load: 78 },
+    { num: "03", name: "Centro—Napipine", type: "Chapa", pax: 4200, buses: 16, compliance: 86, revenue: "42K", load: 72 },
+    { num: "04", name: "Muhala—Namicopo", type: "Chapa", pax: 3800, buses: 14, compliance: 77, revenue: "38K", load: 68 },
+    { num: "05", name: "Centro—Mutauanha", type: "Coop", pax: 3100, buses: 12, compliance: 74, revenue: "31K", load: 62 },
+    { num: "06", name: "Napipine—Namutequeliua", type: "Chapa", pax: 2600, buses: 10, compliance: 82, revenue: "26K", load: 58 },
+    { num: "07", name: "Centro—Anchilo", type: "Chapa", pax: 2400, buses: 8, compliance: 79, revenue: "24K", load: 65 },
+    { num: "08", name: "Muhala—Mutauanha", type: "Coop", pax: 2100, buses: 6, compliance: 90, revenue: "21K", load: 55 },
+  ],
+};
+
+const RoutesScreen = ({ city }) => (
   <div style={{ flex: 1, overflow: "auto", padding: "12px 16px" }}>
     <div style={{ fontSize: 16, fontWeight: 800, color: C.text, marginBottom: 12 }}>Desempenho por Rota</div>
-    {[
-      { num: "01", name: "Baixa—Magoanine", type: "BRT", pax: 18400, buses: 22, compliance: 96, revenue: "276K", load: 82 },
-      { num: "02", name: "Zimpeto—Matola Gare", type: "BRT", pax: 14200, buses: 18, compliance: 93, revenue: "213K", load: 78 },
-      { num: "03", name: "Museu—KaMpfumo", type: "Coop", pax: 8600, buses: 14, compliance: 91, revenue: "129K", load: 65 },
-      { num: "05", name: "Matola—Praça Trab.", type: "Coop", pax: 12100, buses: 16, compliance: 84, revenue: "181K", load: 88 },
-      { num: "07", name: "Xipamanine—Costa Sol", type: "Chapa", pax: 9800, buses: 28, compliance: 79, revenue: "147K", load: 71 },
-      { num: "12", name: "KaMpfumo—Zimpeto", type: "Coop", pax: 7200, buses: 12, compliance: 92, revenue: "108K", load: 59 },
-    ].map((r, i) => (
+    {ROUTES_DATA[city].map((r, i) => (
       <div key={i} style={{ background: C.card, borderRadius: 16, padding: "14px", border: `1px solid ${C.border}`, marginBottom: 8 }}>
         <div style={{ display: "flex", gap: 10, marginBottom: 10 }}>
           <div style={{ width: 42, height: 42, borderRadius: 12, background: r.compliance >= 90 ? `${C.success}12` : r.compliance >= 85 ? `${C.amber}12` : `${C.danger}12`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
@@ -361,10 +443,10 @@ export default function AdminPanel() {
       </div>
       <TabBar active={tab} go={setTab} />
       {tab === tabs.OVERVIEW && <OverviewScreen city={city} />}
-      {tab === tabs.FLEET && <FleetScreen />}
-      {tab === tabs.COMPLIANCE && <ComplianceScreen />}
-      {tab === tabs.REVENUE && <RevenueScreen />}
-      {tab === tabs.ROUTES && <RoutesScreen />}
+      {tab === tabs.FLEET && <FleetScreen city={city} />}
+      {tab === tabs.COMPLIANCE && <ComplianceScreen city={city} />}
+      {tab === tabs.REVENUE && <RevenueScreen city={city} />}
+      {tab === tabs.ROUTES && <RoutesScreen city={city} />}
     </div>
   );
 }

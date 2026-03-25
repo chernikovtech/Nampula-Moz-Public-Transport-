@@ -176,7 +176,7 @@ export default function ReportPage() {
             {[
               { icon: '👤', title: 'Passenger App', desc: 'Route discovery, live bus tracking, ticket purchase (cash/card/mobile money/USSD), QR-based boarding, 90-minute transfer window, trip history with digital receipts.', link: '/concept-1', linkLabel: 'View Passenger Concepts →', color: '#E85D04' },
               { icon: '🚌', title: 'Driver Interface', desc: 'Yango Pro for bus operators. Route navigation with stop-by-stop progress, passenger fare logging (all payment methods), shift revenue summary, compliance score, and AMT alerts.', link: '/driver', linkLabel: 'View Driver Demo →', color: '#FF1A1A' },
-              { icon: '📊', title: 'AMT Admin Dashboard', desc: 'Real-time fleet map with 487+ vehicle positions. Route compliance monitoring with automatic violation detection. Revenue analytics by operator, route, and payment method. Revenue leakage estimation.', link: '/admin', linkLabel: 'View Admin Demo →', color: '#FF1A1A' },
+              { icon: '📊', title: 'AMT Admin Dashboard', desc: 'Real-time fleet map with 600+ vehicle positions across Maputo and Nampula. City-switchable views. Route compliance monitoring with automatic violation detection. Revenue analytics by operator, route, and payment method.', link: '/admin', linkLabel: 'View Admin Demo →', color: '#FF1A1A' },
             ].map((item, i) => (
               <div key={i} style={{ ...s.card, border: `1px solid ${item.color}20` }}>
                 <div style={{ fontSize: 32, marginBottom: 12 }}>{item.icon}</div>
