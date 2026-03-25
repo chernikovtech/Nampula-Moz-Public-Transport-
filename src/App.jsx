@@ -10,8 +10,7 @@ const LOGO_URL = 'https://avatars.mds.yandex.net/get-lpc/14837328/21641dca-3288-
 
 function Nav() {
   const location = useLocation()
-  const isDemo = location.pathname.startsWith('/concept')
-  
+
   return (
     <nav style={{
       background: '#000',
@@ -183,6 +182,13 @@ export default function App() {
           <DemoWrapper title="AMT Admin Dashboard" subtitle="Real-time fleet monitoring, route compliance, revenue analytics for the transport authority." color="#FF1A1A">
             <AdminPanel />
           </DemoWrapper>
+        } />
+        <Route path="*" element={
+          <div style={{ textAlign: 'center', padding: '4rem 1rem' }}>
+            <h2 style={{ color: '#FF1A1A', marginBottom: '1rem' }}>404</h2>
+            <p style={{ color: '#7A7A7A', marginBottom: '2rem' }}>Página não encontrada</p>
+            <Link to="/" style={{ color: '#FF1A1A', textDecoration: 'none', fontWeight: 500 }}>← Voltar ao Relatório</Link>
+          </div>
         } />
       </Routes>
     </>
