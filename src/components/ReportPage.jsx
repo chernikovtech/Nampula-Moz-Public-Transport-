@@ -86,10 +86,10 @@ export default function ReportPage() {
             Yango Tech · Smart City · Public Transport
           </div>
           <h1 style={{ fontFamily: '"Yango Headline", sans-serif', fontWeight: 900, fontSize: 'clamp(2.2rem, 5vw, 3.5rem)', lineHeight: '88%', letterSpacing: 'calc(1em/50)', textTransform: 'uppercase', marginBottom: '1.25rem' }}>
-            Maputo Transit<br />UX Design Concepts
+            Mozambique Transit<br />UX Design Concepts
           </h1>
           <p style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.55)', maxWidth: 700, margin: '0 auto', letterSpacing: '0.05em' }}>
-            Three mobile ticketing and bus navigation system concepts for Mozambique's Maputo metropolitan area — designed for the Move Maputo BRT deployment, the FAMBA electronic ticketing ecosystem, and the 350+ cooperative buses serving 3 million citizens.
+            Mobile ticketing and bus navigation system concepts for Mozambique's Maputo and Nampula metropolitan areas — designed for BRT deployment, the FAMBA electronic ticketing ecosystem, and the 600+ cooperative buses serving 4 million citizens across both cities.
           </p>
         </div>
       </section>
@@ -98,17 +98,19 @@ export default function ReportPage() {
       <section style={s.section}>
         <div style={s.container}>
           <div style={s.label}>Market Context</div>
-          <h2 style={s.h2}>The Maputo Challenge</h2>
+          <h2 style={s.h2}>The Mozambique Transit Challenge</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '0.75rem', marginBottom: '1.5rem' }}>
-            <Stat value="3M" label="Metro Population" />
-            <Stat value="739" label="Total Buses" />
-            <Stat value="13" label="Active Routes" />
-            <Stat value="128K" label="Daily Passengers" />
+            <Stat value="4M+" label="Combined Metro Pop." />
+            <Stat value="877" label="Total Buses" />
+            <Stat value="2" label="Target Cities" />
+            <Stat value="160K" label="Daily Passengers" />
             <Stat value="$250M" label="World Bank Grant" />
             <Stat value="0%" label="Digital Infrastructure" />
           </div>
           <div style={s.prose}>
-            <p>Maputo's transport ecosystem presents a paradox: a $250M World Bank-funded BRT system is being built alongside an entirely informal, cash-based, unmonitored fleet of 715 private minibuses. The FAMBA card system — a PPP for electronic fare collection — was rolled out in 2021 but adoption stalled. The municipality's first priority is simple: <strong>track buses to detect driver malpractice in route cutting and fare skimming</strong>.</p>
+            <p><strong>Maputo</strong> (3M pop.) presents a paradox: a $250M World Bank-funded BRT system is being built alongside an entirely informal, cash-based, unmonitored fleet of 715 private minibuses across 13 routes. The FAMBA card system was rolled out in 2021 but adoption stalled.</p>
+            <p><strong>Nampula</strong> (1M+ pop.), Mozambique's third-largest city and northern economic hub, faces a parallel challenge with 138 buses across 8 routes — entirely undigitized, cash-only, and with zero route compliance monitoring. Nampula's smaller scale makes it an ideal pilot city for rapid deployment before scaling to Maputo.</p>
+            <p>Both cities share the same core priority: <strong>track buses to detect driver malpractice in route cutting and fare skimming</strong>. The platform is designed to deploy in both cities with city-specific route data and operator configurations.</p>
           </div>
         </div>
       </section>
@@ -198,7 +200,7 @@ export default function ReportPage() {
             <div style={{ fontFamily: '"Yango Headline"', fontWeight: 900, fontSize: '1.6rem', lineHeight: '90%', textTransform: 'uppercase', color: '#E85D04', marginBottom: '0.3rem' }}>Famba Digital</div>
             <div style={{ fontSize: '0.9rem', color: '#E85D04', fontWeight: 500, marginBottom: '1rem' }}>Bridge the cash gap — meet users where they are</div>
             <div style={{ ...s.prose, color: 'rgba(255,255,255,0.65)' }}>
-              <p>Famba Digital accepts that Maputo's transit is cash-first and builds a digital layer on top without forcing behavior change. Every cash payment generates a digital receipt. The USSD channel (*321#) works on any phone without data. The smartphone app is a bonus layer, not a prerequisite. The system digitizes revenue from day one while passengers barely notice the transition.</p>
+              <p>Famba Digital accepts that Mozambique's urban transit is cash-first and builds a digital layer on top without forcing behavior change. Every cash payment generates a digital receipt. The USSD channel (*321#) works on any phone without data. The smartphone app is a bonus layer, not a prerequisite. The system digitizes revenue from day one while passengers barely notice the transition — deployable in both Maputo and Nampula from launch.</p>
             </div>
             <div style={{ marginTop: '0.75rem' }}>
               <Tag color="amber">Cash-First</Tag>
@@ -380,16 +382,16 @@ export default function ReportPage() {
           <div style={s.labelDark}>Strategic Recommendation</div>
           <h2 style={{ ...s.h2, color: '#fff' }}>Phased Rollout Plan</h2>
           <div style={{ ...s.cardDark, borderLeft: '5px solid #FF1A1A', paddingLeft: '1.75rem' }}>
-            <h3 style={{ ...s.h3, marginTop: 0, color: '#FF1A1A' }}>Verdict: Start with Famba Digital, Evolve into Mover</h3>
+            <h3 style={{ ...s.h3, marginTop: 0, color: '#FF1A1A' }}>Verdict: Pilot in Nampula, Scale to Maputo</h3>
             <div style={{ ...s.prose, color: 'rgba(255,255,255,0.65)' }}>
-              <p>Famba Digital is the right starting concept because it solves the immediate priority — GPS route monitoring and revenue visibility — without requiring behavioral change. Cash still works. The conductor keeps their role. But behind the scenes, every trip is digitized.</p>
+              <p>Famba Digital is the right starting concept because it solves the immediate priority — GPS route monitoring and revenue visibility — without requiring behavioral change. Cash still works. The conductor keeps their role. But behind the scenes, every trip is digitized. Nampula's smaller fleet (138 buses) makes it the ideal pilot city for rapid validation before full Maputo deployment.</p>
             </div>
           </div>
 
           {[
-            { phase: 'P1', color: '#E85D04', title: 'Phase 1: Famba Digital Foundation', time: 'Months 1–6 · $80K–$120K', desc: 'Deploy GPS trackers on all 739 buses. Roll out conductor handhelds on public buses first. Launch USSD *321# for schedules and tickets. Build AMT compliance dashboard. Goal: 100% GPS coverage.' },
-            { phase: 'P2', color: '#0D9488', title: 'Phase 2: Mover Migration', time: 'Months 6–18 · Aligned with BRT Launch', desc: 'Introduce multimodal journey planner and mobile money rails when BRT corridors come online. Implement revenue pooling for BRT routes. Integrate CFM rail. Begin cashless migration on high-compliance routes.' },
-            { phase: 'P3', color: '#4F46E5', title: 'Phase 3: Community Layer', time: 'Months 18–36 · Full Ecosystem', desc: "Layer Xitimela's community features — crowdsourced reporting, driver reputation, community groups — on top of the now-digitized system. By this point, enough users have digital habits to sustain the platform." },
+            { phase: 'P1', color: '#E85D04', title: 'Phase 1: Nampula Pilot + Maputo Foundation', time: 'Months 1–6 · $80K–$120K', desc: 'Launch in Nampula first (138 buses, 8 routes) as a rapid pilot — smaller fleet enables faster iteration. Simultaneously deploy GPS trackers on all 739 Maputo buses. Roll out conductor handhelds and USSD *321#. Build AMT compliance dashboard for both cities.' },
+            { phase: 'P2', color: '#0D9488', title: 'Phase 2: Mover Migration', time: 'Months 6–18 · Aligned with BRT Launch', desc: 'Scale Nampula learnings to Maputo. Introduce multimodal journey planner and mobile money rails when BRT corridors come online. Implement revenue pooling for BRT routes. Integrate CFM rail. Begin cashless migration on high-compliance routes in both cities.' },
+            { phase: 'P3', color: '#4F46E5', title: 'Phase 3: Community Layer', time: 'Months 18–36 · Full Ecosystem', desc: "Layer Xitimela's community features — crowdsourced reporting, driver reputation, community groups — on top of the now-digitized system across both Maputo and Nampula. By this point, enough users have digital habits to sustain the platform." },
           ].map((p, i) => (
             <div key={i} style={{ ...s.cardDark, display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
               <div style={{ width: 44, height: 44, borderRadius: 22, background: p.color, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontFamily: '"Yango Headline"', fontWeight: 900, fontSize: '1rem', flexShrink: 0 }}>{p.phase}</div>
@@ -406,8 +408,8 @@ export default function ReportPage() {
       {/* FOOTER */}
       <section style={{ background: '#000', padding: '2.5rem 0', textAlign: 'center' }}>
         <img src={LOGO} alt="Yango Tech" style={{ filter: 'invert(1)', height: 22, marginBottom: '0.75rem' }} />
-        <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.72rem', letterSpacing: '0.05em' }}>Maputo Transit UX Concepts · Yango Tech Smart City Division · March 2026</p>
-        <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: '0.62rem', letterSpacing: '0.05em', marginTop: '0.3rem' }}>Prepared for Nampula Municipality / AMT · Confidential</p>
+        <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.72rem', letterSpacing: '0.05em' }}>Mozambique Transit UX Concepts · Yango Tech Smart City Division · March 2026</p>
+        <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: '0.62rem', letterSpacing: '0.05em', marginTop: '0.3rem' }}>Prepared for Nampula Municipality / AMT / Maputo Municipality · Confidential</p>
       </section>
     </div>
   )

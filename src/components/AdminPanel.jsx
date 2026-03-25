@@ -60,13 +60,32 @@ const MiniBar = ({ value, max, color }) => (
   </div>
 );
 
-const OverviewScreen = () => (
+const CITIES = {
+  maputo: { name: "Maputo Metropolitano", vehicles: "487", passengers: "84,210", revenue: "1.26M MT", compliance: "91.4%", zones: [
+    { name: "BAIXA", pax: "28,400", x: 20, y: 10, w: 80, h: 50, color: C.danger },
+    { name: "MATOLA", pax: "18,200", x: 120, y: 15, w: 70, h: 45, color: C.amber },
+    { name: "ZIMPETO", pax: "12,800", x: 210, y: 20, w: 60, h: 40, color: C.teal },
+    { name: "MAGOAN.", pax: "8,100", x: 290, y: 25, w: 55, h: 35, color: C.indigo },
+    { name: "KAMPFUMO", pax: "14,600", x: 60, y: 70, w: 65, h: 35, color: C.amber },
+  ]},
+  nampula: { name: "Nampula Cidade", vehicles: "138", passengers: "31,400", revenue: "420K MT", compliance: "84.7%", zones: [
+    { name: "CENTRO", pax: "12,100", x: 20, y: 10, w: 80, h: 50, color: C.danger },
+    { name: "MUHALA", pax: "7,800", x: 120, y: 15, w: 70, h: 45, color: C.amber },
+    { name: "NAMICOPO", pax: "5,200", x: 210, y: 20, w: 60, h: 40, color: C.teal },
+    { name: "NAPIPINE", pax: "3,600", x: 290, y: 25, w: 55, h: 35, color: C.indigo },
+    { name: "MUTAUANHA", pax: "2,700", x: 60, y: 70, w: 65, h: 35, color: C.amber },
+  ]},
+};
+
+const OverviewScreen = ({ city }) => {
+  const c = CITIES[city];
+  return (
   <div style={{ flex: 1, overflow: "auto", padding: "12px 16px" }}>
     {/* Header */}
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
       <div>
         <div style={{ fontSize: 9, color: C.muted, textTransform: "uppercase", letterSpacing: "0.1em" }}>AMT · Painel de Controlo</div>
-        <div style={{ fontSize: 18, fontWeight: 800, color: C.text }}>Maputo Metropolitano</div>
+        <div style={{ fontSize: 18, fontWeight: 800, color: C.text }}>{c.name}</div>
       </div>
       <div style={{ display: "flex", gap: 6 }}>
         <div style={{ width: 8, height: 8, borderRadius: 4, background: C.success, marginTop: 6 }} />
@@ -76,10 +95,10 @@ const OverviewScreen = () => (
 
     {/* KPIs */}
     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 14 }}>
-      <KPI icon="🚌" value="487" label="Veículos Activos" delta="+12" color={C.teal} />
-      <KPI icon="👥" value="84,210" label="Passageiros Hoje" delta="+8%" color={C.indigo} />
-      <KPI icon="💰" value="1.26M MT" label="Receita Hoje" delta="+5%" color={C.amber} />
-      <KPI icon="📊" value="91.4%" label="Conformidade Média" delta="+2.1%" color={C.success} />
+      <KPI icon="🚌" value={c.vehicles} label="Veículos Activos" delta="+12" color={C.teal} />
+      <KPI icon="👥" value={c.passengers} label="Passageiros Hoje" delta="+8%" color={C.indigo} />
+      <KPI icon="💰" value={c.revenue} label="Receita Hoje" delta="+5%" color={C.amber} />
+      <KPI icon="📊" value={c.compliance} label="Conformidade Média" delta="+2.1%" color={C.success} />
     </div>
 
     {/* Live Alerts */}
@@ -103,30 +122,18 @@ const OverviewScreen = () => (
     <div style={{ fontSize: 10, fontWeight: 600, color: C.muted, textTransform: "uppercase", letterSpacing: "0.1em", marginTop: 14, marginBottom: 8 }}>Mapa de Calor — Passageiros por Zona</div>
     <div style={{ background: C.card, borderRadius: 16, border: `1px solid ${C.border}`, padding: 12, height: 140, position: "relative", overflow: "hidden" }}>
       <svg viewBox="0 0 350 110" width="100%">
-        {/* Simplified zones */}
-        <rect x="20" y="10" width="80" height="50" rx="8" fill={C.danger} opacity="0.3"/>
-        <text x="60" y="35" textAnchor="middle" fontSize="8" fontWeight="700" fill={C.danger}>BAIXA</text>
-        <text x="60" y="48" textAnchor="middle" fontSize="7" fill={C.text}>28,400 pax</text>
-        
-        <rect x="120" y="15" width="70" height="45" rx="8" fill={C.amber} opacity="0.25"/>
-        <text x="155" y="37" textAnchor="middle" fontSize="8" fontWeight="700" fill={C.amber}>MATOLA</text>
-        <text x="155" y="50" textAnchor="middle" fontSize="7" fill={C.text}>18,200 pax</text>
-        
-        <rect x="210" y="20" width="60" height="40" rx="8" fill={C.teal} opacity="0.2"/>
-        <text x="240" y="40" textAnchor="middle" fontSize="8" fontWeight="700" fill={C.teal}>ZIMPETO</text>
-        <text x="240" y="52" textAnchor="middle" fontSize="7" fill={C.text}>12,800 pax</text>
-        
-        <rect x="290" y="25" width="55" height="35" rx="8" fill={C.indigo} opacity="0.15"/>
-        <text x="317" y="43" textAnchor="middle" fontSize="8" fontWeight="700" fill={C.indigo}>MAGOAN.</text>
-        <text x="317" y="53" textAnchor="middle" fontSize="7" fill={C.text}>8,100 pax</text>
-
-        <rect x="60" y="70" width="65" height="35" rx="8" fill={C.amber} opacity="0.2"/>
-        <text x="92" y="88" textAnchor="middle" fontSize="8" fontWeight="700" fill={C.amber}>KAMPFUMO</text>
-        <text x="92" y="98" textAnchor="middle" fontSize="7" fill={C.text}>14,600 pax</text>
+        {c.zones.map((z, i) => (
+          <g key={i}>
+            <rect x={z.x} y={z.y} width={z.w} height={z.h} rx="8" fill={z.color} opacity={0.3 - i * 0.04}/>
+            <text x={z.x + z.w/2} y={z.y + z.h/2 - 2} textAnchor="middle" fontSize="8" fontWeight="700" fill={z.color}>{z.name}</text>
+            <text x={z.x + z.w/2} y={z.y + z.h/2 + 10} textAnchor="middle" fontSize="7" fill={C.text}>{z.pax} pax</text>
+          </g>
+        ))}
       </svg>
     </div>
   </div>
-);
+  );
+};
 
 const FleetScreen = () => (
   <div style={{ flex: 1, overflow: "auto", padding: "12px 16px" }}>
@@ -332,11 +339,28 @@ const RoutesScreen = () => (
 
 export default function AdminPanel() {
   const [tab, setTab] = useState(tabs.OVERVIEW);
+  const [city, setCity] = useState("maputo");
   return (
     <div style={{ width: 390, height: 844, margin: "20px auto", background: C.bg, borderRadius: 44, overflow: "hidden", display: "flex", flexDirection: "column", fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', boxShadow: "0 25px 80px rgba(0,0,0,0.2), 0 0 0 1px rgba(0,0,0,0.08)" }}>
       <StatusBar />
+      {/* City Switcher */}
+      <div style={{ display: "flex", gap: 4, padding: "6px 12px" }}>
+        {[
+          { id: "maputo", label: "Maputo" },
+          { id: "nampula", label: "Nampula" },
+        ].map(c => (
+          <button key={c.id} onClick={() => setCity(c.id)} style={{
+            flex: 1, background: city === c.id ? C.dark : "transparent",
+            border: city === c.id ? "none" : `1px solid ${C.border}`,
+            borderRadius: 10, padding: "7px 10px", fontSize: 11, fontWeight: 600,
+            color: city === c.id ? "#fff" : C.muted, cursor: "pointer",
+          }}>
+            {c.label}
+          </button>
+        ))}
+      </div>
       <TabBar active={tab} go={setTab} />
-      {tab === tabs.OVERVIEW && <OverviewScreen />}
+      {tab === tabs.OVERVIEW && <OverviewScreen city={city} />}
       {tab === tabs.FLEET && <FleetScreen />}
       {tab === tabs.COMPLIANCE && <ComplianceScreen />}
       {tab === tabs.REVENUE && <RevenueScreen />}

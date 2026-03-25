@@ -16,5 +16,5 @@ app.use((req, res, next) => {
 })
 
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Maputo Transit UX running on port ${PORT}`)
+  console.log(`Mozambique Transit UX running on port ${PORT}`)
 })

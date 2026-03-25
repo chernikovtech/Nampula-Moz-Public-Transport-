@@ -44,7 +44,7 @@ const HomeScreen = ({ go }) => {
       <div style={{ background: `linear-gradient(150deg, ${C.dark} 0%, ${C.teal} 100%)`, padding: "20px 20px 32px", borderRadius: "0 0 32px 32px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
           <div>
-            <div style={{ fontSize: 10, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: "0.12em", fontWeight: 600 }}>Mover Maputo</div>
+            <div style={{ fontSize: 10, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: "0.12em", fontWeight: 600 }}>Mover Moçambique</div>
             <div style={{ fontSize: 24, fontWeight: 800, color: "#fff", marginTop: 4 }}>Para onde?</div>
           </div>
           <div style={{ display: "flex", gap: 8 }}>
@@ -401,7 +401,7 @@ const TicketScreen = ({ back }) => {
         <div style={{ background: `linear-gradient(145deg, ${C.teal} 0%, ${C.tealDark} 100%)`, borderRadius: 24, padding: "24px", textAlign: "center", position: "relative", overflow: "hidden" }}>
           <div style={{ position: "absolute", top: -20, right: -20, width: 80, height: 80, borderRadius: 40, background: "rgba(255,255,255,0.08)" }} />
 
-          <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: "0.15em", color: "rgba(255,255,255,0.6)", fontWeight: 600, marginBottom: 4 }}>Mover Maputo · Bilhete Multimodal</div>
+          <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: "0.15em", color: "rgba(255,255,255,0.6)", fontWeight: 600, marginBottom: 4 }}>Mover Moçambique · Bilhete Multimodal</div>
 
           <div style={{ width: 140, height: 140, margin: "12px auto", background: "#fff", borderRadius: 18, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <svg viewBox="0 0 100 100" width="120" height="120">
